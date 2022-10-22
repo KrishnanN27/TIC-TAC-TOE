@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     '',
   ];
 
-  int oScore = 0, xScore = 0;
+  int oScore = 0, xScore = 0, filledBoxes = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -124,11 +124,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _tapped(int index) {
+
     setState(() {
       if (onTurn && displayEx0h[index] == '') {
         displayEx0h[index] = 'o';
+            filledBoxes +=1;
+
       } else if (!onTurn && displayEx0h[index] == '') {
         displayEx0h[index] = 'x';
+       filledBoxes +=1;
+
+        
+
       }
       onTurn = !onTurn;
       _checkWinner();
@@ -141,34 +148,36 @@ class _HomePageState extends State<HomePage> {
         displayEx0h[0] == displayEx0h[2] &&
         displayEx0h[0] != '') {
       _showWinDialog(displayEx0h[0]);
-    } else if (displayEx0h[3] == displayEx0h[4] &&
+    }  if (displayEx0h[3] == displayEx0h[4] &&
         displayEx0h[3] == displayEx0h[5] &&
         displayEx0h[3] != '') {
       _showWinDialog(displayEx0h[3]);
-    } else if (displayEx0h[6] == displayEx0h[7] &&
+    }  if (displayEx0h[6] == displayEx0h[7] &&
         displayEx0h[6] == displayEx0h[8] &&
         displayEx0h[6] != '') {
       _showWinDialog(displayEx0h[6]);
-    } else if (displayEx0h[0] == displayEx0h[3] &&
+    }  if (displayEx0h[0] == displayEx0h[3] &&
         displayEx0h[0] == displayEx0h[6] &&
         displayEx0h[0] != '') {
       _showWinDialog(displayEx0h[0]);
-    } else if (displayEx0h[1] == displayEx0h[4] &&
+    }  if (displayEx0h[1] == displayEx0h[4] &&
         displayEx0h[1] == displayEx0h[7] &&
         displayEx0h[1] != '') {
       _showWinDialog(displayEx0h[1]);
-    } else if (displayEx0h[2] == displayEx0h[5] &&
+    }  if (displayEx0h[2] == displayEx0h[5] &&
         displayEx0h[2] == displayEx0h[8] &&
         displayEx0h[2] != '') {
       _showWinDialog(displayEx0h[2]);
-    } else if (displayEx0h[6] == displayEx0h[4] &&
+    }  if (displayEx0h[6] == displayEx0h[4] &&
         displayEx0h[6] == displayEx0h[2] &&
         displayEx0h[6] != '') {
       _showWinDialog(displayEx0h[6]);
-    } else if (displayEx0h[0] == displayEx0h[4] &&
+    }  if (displayEx0h[0] == displayEx0h[4] &&
         displayEx0h[0] == displayEx0h[8] &&
         displayEx0h[0] != '') {
       _showWinDialog(displayEx0h[0]);
+    } else if(filledBoxes == 9){
+      _showDrawDialog();
     }
   }
 
@@ -205,5 +214,26 @@ void _clearBoard() {
   }
   });
 
+  filledBoxes = 0;
+
 }
+
+  void _showDrawDialog() {
+       showDialog(
+      barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('DRAW'),
+            actions: [
+              TextButton(onPressed: (){
+                _clearBoard();
+                Navigator.of(context).pop();
+              },
+              child: Text('Play Again'),)
+            ],
+          );
+        });
+
+  }
 }
